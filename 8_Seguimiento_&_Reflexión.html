@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora: Reflexión Diaria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-button.open .accordion-arrow {
+            transform: rotate(180deg);
+        }
+        .accordion-arrow {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 py-8">
+
+    <div class="w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10">
+        
+        <header class="text-center mb-8 border-b pb-6">
+            <h1 class="text-3xl md:text-4xl font-black text-[#003F5C]">📝 Reflexión Diaria</h1>
+            <p class="text-gray-500 mt-3 max-w-2xl mx-auto">Tómate 5 minutos al final de cada día para responder. La reflexión convierte el aprendizaje en sabiduría. Tu progreso se guarda solo.</p>
+        </header>
+
+        <main id="reflection-container" class="space-y-4">
+            <!-- Los días se generarán aquí con JS -->
+        </main>
+
+        <footer class="mt-8 pt-6 border-t flex items-center justify-center">
+             <button id="clearButton" class="bg-red-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-red-600 transition transform hover:scale-105">
+                Borrar Todas las Reflexiones
+            </button>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('reflection-container');
+            const clearButton = document.getElementById('clearButton');
+
+            const reflections = [
+                {
+                    day: 1,
+                    questions: [
+                        "¿Qué aprendí hoy sobre cómo me hablo a mí mismo?",
+                        "¿Cómo me sentí al cambiar conscientemente mis pensamientos limitantes por frases de poder?",
+                        "¿Qué efecto inmediato (por pequeño que fuera) noté en mis acciones o en mi estado de ánimo?"
+                    ]
+                },
+                { day: 2, questions: ["Pregunta 1 del Día 2...", "Pregunta 2 del Día 2...", "Pregunta 3 del Día 2..."] },
+                { day: 3, questions: ["Pregunta 1 del Día 3...", "Pregunta 2 del Día 3...", "Pregunta 3 del Día 3..."] },
+                { day: 4, questions: ["Pregunta 1 del Día 4...", "Pregunta 2 del Día 4...", "Pregunta 3 del Día 4..."] },
+                { day: 5, questions: ["Pregunta 1 del Día 5...", "Pregunta 2 del Día 5...", "Pregunta 3 del Día 5..."] },
+                { day: 6, questions: ["Pregunta 1 del Día 6...", "Pregunta 2 del Día 6...", "Pregunta 3 del Día 6..."] },
+                { day: 7, questions: ["Pregunta 1 del Día 7...", "Pregunta 2 del Día 7...", "Pregunta 3 del Día 7..."] }
+            ];
+
+            function saveData() {
+                const data = {};
+                reflections.forEach((reflection, dayIndex) => {
+                    reflection.questions.forEach((q, qIndex) => {
+                        const textarea = document.getElementById(`d${dayIndex}q${qIndex}`);
+                        if (textarea) {
+                            data[`d${dayIndex}q${qIndex}`] = textarea.value;
+                        }
+                    });
+                });
+                localStorage.setItem('dailyReflections', JSON.stringify(data));
+            }
+
+            function loadData() {
+                const savedData = JSON.parse(localStorage.getItem('dailyReflections'));
+                if (savedData) {
+                    Object.keys(savedData).forEach(key => {
+                        const textarea = document.getElementById(key);
+                        if (textarea) {
+                            textarea.value = savedData[key];
+                        }
+                    });
+                }
+            }
+            
+            reflections.forEach((reflection, dayIndex) => {
+                const dayWrapper = document.createElement('div');
+                dayWrapper.className = 'border border-gray-200 rounded-lg';
+
+                const button = document.createElement('button');
+                button.className = 'accordion-button w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition';
+                button.innerHTML = `
+                    <span class="text-xl font-bold text-[#58508D]">DÍA ${reflection.day}</span>
+                    <svg class="accordion-arrow w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                `;
+
+                const content = document.createElement('div');
+                content.className = 'accordion-content p-4 space-y-6 bg-white';
+                
+                reflection.questions.forEach((question, qIndex) => {
+                    const questionBlock = document.createElement('div');
+                    questionBlock.innerHTML = `<label for="d${dayIndex}q${qIndex}" class="font-semibold text-gray-700">${qIndex + 1}. ${question}</label>`;
+                    
+                    const textarea = document.createElement('textarea');
+                    textarea.id = `d${dayIndex}q${qIndex}`;
+                    textarea.className = 'mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#BC5090] focus:border-transparent transition';
+                    textarea.placeholder = 'Escribe tu respuesta aquí...';
+                    textarea.rows = 4;
+                    textarea.addEventListener('input', saveData);
+                    
+                    questionBlock.appendChild(textarea);
+                    content.appendChild(questionBlock);
+                });
+
+                dayWrapper.appendChild(button);
+                dayWrapper.appendChild(content);
+                container.appendChild(dayWrapper);
+
+                button.addEventListener('click', () => {
+                    button.classList.toggle('open');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+
+            clearButton.addEventListener('click', () => {
+                if (confirm('¿Estás seguro de que quieres borrar TODAS tus reflexiones? Esta acción no se puede deshacer.')) {
+                    document.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+                    localStorage.removeItem('dailyReflections');
+                }
+            });
+
+            loadData();
+        });
+    </script>
+</body>
+</html>
