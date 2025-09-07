@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio de Hábitos: Diseña tu Mini-Hábito</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5ece0; /* Cream */
+        }
+        .gold-text { color: #b29133; }
+        .gold-bg { background-color: #cfaf5a; }
+        .gold-bg-dark { background-color: #b29133; }
+        .gold-border { border-color: #cfaf5a; }
+        .light-gray-bg { background-color: #d9d9d9; }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        .icon-bg {
+            background-color: #f5ece0;
+            border: 2px solid #cfaf5a;
+        }
+        textarea {
+            background-color: #f5ece0;
+            transition: all 0.3s ease;
+        }
+        textarea:focus {
+            background-color: white;
+            border-color: #b29133;
+            box-shadow: 0 0 0 3px rgba(207, 175, 90, 0.3);
+            outline: none;
+        }
+        #saveFeedback {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="py-8 px-4">
+
+    <div class="w-full max-w-4xl mx-auto bg-white rounded-2xl card-shadow overflow-hidden">
+        <header class="p-8 bg-black text-white text-center">
+            <h1 class="text-3xl md:text-4xl font-black uppercase tracking-wider gold-text">Laboratorio de Mini-Hábitos</h1>
+            <p class="text-gray-300 mt-3 max-w-3xl mx-auto">
+                "Cambiar tu vida no requiere un esfuerzo gigante, sino empezar con un gesto pequeño que desencadene la constancia." - BJ Fogg, Stanford University
+            </p>
+        </header>
+
+        <main class="p-8 md:p-10">
+            <div id="habit-form" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- PASO 1: ÁREA -->
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">🎯</span>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-black">Paso 1: Elige tu Área</h2>
+                            <p class="text-sm text-gray-600">¿Qué dimensión de tu vida quieres potenciar?</p>
+                        </div>
+                    </div>
+                    <textarea id="habitArea" class="w-full p-3 border-2 border-gray-200 rounded-lg text-lg" rows="3" placeholder="Ej: Salud, Productividad, Paz mental..."></textarea>
+                </div>
+
+                <!-- PASO 2: MINI-HÁBITO -->
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">🌱</span>
+                        </div>
+                         <div>
+                            <h2 class="text-xl font-bold text-black">Paso 2: Diseña el Hábito</h2>
+                            <p class="text-sm text-gray-600">Hazlo tan pequeño que sea imposible no hacerlo.</p>
+                        </div>
+                    </div>
+                    <textarea id="miniHabit" class="w-full p-3 border-2 border-gray-200 rounded-lg text-lg" rows="3" placeholder="Ej: Hacer 5 sentadillas, escribir una idea..."></textarea>
+                </div>
+
+                <!-- PASO 3: SEÑAL -->
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">⚓</span>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-black">Paso 3: Define la Señal</h2>
+                            <p class="text-sm text-gray-600">¿Qué acción existente activará tu nuevo hábito?</p>
+                        </div>
+                    </div>
+                    <textarea id="habitTrigger" class="w-full p-3 border-2 border-gray-200 rounded-lg text-lg" rows="3" placeholder="Ej: Después de cepillarme los dientes..."></textarea>
+                </div>
+                
+                <!-- PASO 4: RECOMPENSA -->
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-4">
+                        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">⭐</span>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-black">Paso 4: Planifica la Recompensa</h2>
+                            <p class="text-sm text-gray-600">¿Cómo celebrarás tu victoria inmediata?</p>
+                        </div>
+                    </div>
+                    <textarea id="habitReward" class="w-full p-3 border-2 border-gray-200 rounded-lg text-lg" rows="3" placeholder="Ej: Sentirme orgulloso, marcar un check..."></textarea>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="p-6 light-gray-bg flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center h-10">
+                <span id="saveFeedback" class="text-green-700 font-bold opacity-0 transform -translate-y-2">¡Progreso Guardado!</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="clearButton" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-black transition transform hover:scale-105">
+                    Limpiar
+                </button>
+                <button id="saveButton" class="gold-bg text-black font-bold py-2 px-6 rounded-lg hover:bg-gold-bg-dark transition transform hover:scale-105">
+                    Guardar Progreso
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const saveButton = document.getElementById('saveButton');
+            const clearButton = document.getElementById('clearButton');
+            const saveFeedback = document.getElementById('saveFeedback');
+            const formInputs = {
+                area: document.getElementById('habitArea'),
+                habit: document.getElementById('miniHabit'),
+                trigger: document.getElementById('habitTrigger'),
+                reward: document.getElementById('habitReward')
+            };
+
+            const saveData = () => {
+                const data = {
+                    area: formInputs.area.value,
+                    habit: formInputs.habit.value,
+                    trigger: formInputs.trigger.value,
+                    reward: formInputs.reward.value
+                };
+                localStorage.setItem('miniHabitDesigner', JSON.stringify(data));
+                
+                // Feedback visual
+                saveFeedback.style.opacity = '1';
+                saveFeedback.style.transform = 'translateY(0)';
+                setTimeout(() => {
+                    saveFeedback.style.opacity = '0';
+                    saveFeedback.style.transform = 'translateY(-0.5rem)';
+                }, 2000);
+            };
+
+            const loadData = () => {
+                const savedData = JSON.parse(localStorage.getItem('miniHabitDesigner'));
+                if (savedData) {
+                    formInputs.area.value = savedData.area || '';
+                    formInputs.habit.value = savedData.habit || '';
+                    formInputs.trigger.value = savedData.trigger || '';
+                    formInputs.reward.value = savedData.reward || '';
+                }
+            };
+
+            const clearData = () => {
+                if (confirm('¿Estás seguro de que quieres limpiar todo el formulario?')) {
+                    formInputs.area.value = '';
+                    formInputs.habit.value = '';
+                    formInputs.trigger.value = '';
+                    formInputs.reward.value = '';
+                    localStorage.removeItem('miniHabitDesigner');
+                }
+            };
+
+            saveButton.addEventListener('click', saveData);
+            clearButton.addEventListener('click', clearData);
+
+            // Guardar automáticamente al escribir
+            Object.values(formInputs).forEach(input => {
+                input.addEventListener('input', saveData);
+            });
+
+            loadData();
+        });
+    </script>
+</body>
+</html>
