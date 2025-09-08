@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbook: Diseña tu Rutina de Impacto</title>
+    <style>
+        :root {
+            --bg-color: #d9d9d9;
+            --text-color: #000000;
+            --accent-color: #cfaf5a;
+            --card-bg-color: #ffffff;
+            --input-bg-color: #f8f8f8;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+            background-size: 25px 25px;
+            color: var(--text-color);
+            padding: 5vh 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .container {
+            width: 90vw;
+            max-width: 800px;
+            background-color: var(--card-bg-color);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .workbook-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background-color: var(--input-bg-color);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease-out both;
+        }
+        
+        /* Animación escalonada para cada paso */
+        .step:nth-child(1) { animation-delay: 0.1s; }
+        .step:nth-child(2) { animation-delay: 0.2s; }
+        .step:nth-child(3) { animation-delay: 0.3s; }
+        .step:nth-child(4) { animation-delay: 0.4s; }
+        .step:nth-child(5) { animation-delay: 0.5s; }
+
+        .step .icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            color: var(--accent-color);
+        }
+        
+        .step .content {
+            flex-grow: 1;
+        }
+
+        .step .content h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+        
+        .step .content p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .step .input-wrapper {
+            flex-shrink: 0;
+            width: 250px;
+        }
+        
+        .step input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .step input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(207, 175, 90, 0.2);
+        }
+        
+        .step input:read-only {
+            background-color: #e9ecef;
+            color: #495057;
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+
+        .commit-button {
+            background-color: var(--accent-color);
+            color: var(--card-bg-color);
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: fadeIn 0.5s ease-out 0.6s both;
+        }
+
+        .commit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+        
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eaf6ec;
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+            border-radius: 10px;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .step {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .step .input-wrapper {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Diseña tu Rutina de Impacto</h1>
+        <p class="intro">La mayoría de los hábitos tardan entre 21 y 66 días en consolidarse. El secreto está en la consistencia, no en la perfección. Usa esta herramienta para diseñar la rutina que servirá como terreno fértil para tus nuevos hábitos.</p>
+
+        <div class="workbook-list">
+            <!-- Paso 1: Despertar -->
+            <div class="step">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 1,1 4,12A8,8 0 0,1 12,4M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/></svg>
+                </div>
+                <div class="content">
+                    <h3>Hora de Despertar</h3>
+                    <p>Sé realista, pero consistente.</p>
+                </div>
+                <div class="input-wrapper">
+                    <input type="time" class="workbook-input">
+                </div>
+            </div>
+
+            <!-- Paso 2: Cuerpo -->
+            <div class="step">
+                <div class="icon">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M20.33,7.24L18.27,6.13C18.67,5.55 18.9,4.86 18.9,4.11C18.9,2.4 17.5,1 15.79,1C14.54,1 13.47,1.76 13,2.83L11,3.44V7.5H13V17.5H11V23H13V21H15V23H17V21H19V23H21V17.5H19V7.93C19.5,8.25 20,8.44 20.33,7.24M15.79,3C16.68,3 17.4,3.72 17.4,4.61C17.4,5.5 16.68,6.22 15.79,6.22C14.9,6.22 14.18,5.5 14.18,4.61C14.18,3.72 14.9,3 15.79,3M3,17.5H5V7.5H3V17.5Z"/></svg>
+                </div>
+                <div class="content">
+                    <h3>1 Acción para tu Cuerpo</h3>
+                    <p>Ej: Beber agua, estirar 5 min.</p>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="workbook-input" placeholder="Escribe tu acción...">
+                </div>
+            </div>
+
+            <!-- Paso 3: Mente -->
+            <div class="step">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M19,2H5A3,3 0 0,0 2,5V19A3,3 0 0,0 5,22H19A3,3 0 0,0 22,19V5A3,3 0 0,0 19,2M11,18H9V16H11V18M11,14H9V7H11V14M15,18H13V16H15V18M15,14H13V10H15V14Z"/></svg>
+                </div>
+                <div class="content">
+                    <h3>1 Acción para tu Mente</h3>
+                    <p>Ej: Leer 1 página, escribir 1 idea.</p>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="workbook-input" placeholder="Escribe tu acción...">
+                </div>
+            </div>
+
+            <!-- Paso 4: Espíritu -->
+            <div class="step">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2C6.5,2 2,6.5 2,12S6.5,22 12,22 22,17.5 22,12 17.5,2 12,2M18,16H14.5L12,13.5L9.5,16H6V15L9,12.5L6,10V9H9.5L12,11.5L14.5,9H18V10L15,12.5L18,15V16Z"/></svg>
+                </div>
+                <div class="content">
+                    <h3>1 Acción para tu Espíritu</h3>
+                    <p>Ej: Oración, meditación, gratitud.</p>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="workbook-input" placeholder="Escribe tu acción...">
+                </div>
+            </div>
+
+            <!-- Paso 5: Planificación -->
+            <div class="step">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M15,20C15,20.55 14.55,21 14,21H6C5.45,21 5,20.55 5,20V4C5,3.45 5.45,3 6,3H14C14.55,3 15,3.45 15,4V20M19,20C19.55,20 20,19.55 20,19V5C20,4.45 19.55,4 19,4H17V2H11V4H10V6H11V18H10V20H11V22H17V20H19V20M8,6H12V8H8V6M8,10H12V12H8V10M8,14H12V16H8V14Z"/></svg>
+                </div>
+                <div class="content">
+                    <h3>1 Acción para tu Planificación</h3>
+                    <p>Ej: Lista de 3 prioridades.</p>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="workbook-input" placeholder="Escribe tu acción...">
+                </div>
+            </div>
+        </div>
+
+        <button class="commit-button" id="commit-btn">Comprometerse con esta Rutina</button>
+        <div class="success-message" id="success-msg">
+            ¡Excelente! Tu rutina de impacto está definida. ¡Comprométete a practicarla mañana mismo!
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const commitBtn = document.getElementById('commit-btn');
+            const successMsg = document.getElementById('success-msg');
+            const inputs = document.querySelectorAll('.workbook-input');
+
+            commitBtn.addEventListener('click', () => {
+                let allFilled = true;
+                inputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        allFilled = false;
+                    }
+                });
+
+                if (allFilled) {
+                    inputs.forEach(input => {
+                        input.readOnly = true;
+                    });
+                    commitBtn.style.display = 'none';
+                    successMsg.style.display = 'block';
+                } else {
+                    alert('Por favor, completa todos los campos para comprometerte con tu rutina.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
