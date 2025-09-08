@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbook: Mi Nuevo Diálogo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5ece0; /* Cream background */
+        }
+        .gold-text { color: #b29133; }
+        .gold-bg { background-color: #cfaf5a; }
+        .gold-bg-dark { background-color: #b29133; }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        textarea {
+            background-color: #f5ece0;
+            border-color: #d9d9d9;
+            transition: all 0.3s ease;
+        }
+        textarea:focus {
+            background-color: white;
+            border-color: #b29133;
+            box-shadow: 0 0 0 3px rgba(207, 175, 90, 0.3);
+            outline: none;
+        }
+        #saveFeedback {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="py-8 px-4">
+
+    <div class="w-full max-w-4xl mx-auto bg-white rounded-2xl card-shadow overflow-hidden">
+        
+        <header class="text-center p-8 bg-black">
+            <h1 class="text-3xl md:text-4xl font-black uppercase tracking-wider gold-text">✍️ Mi Nuevo Diálogo (Workbook)</h1>
+            <p class="text-gray-300 mt-3 max-w-2xl mx-auto">Este es tu espacio para transformar tus pensamientos. Lo que escribas se guardará automáticamente.</p>
+        </header>
+
+        <div class="p-6 md:p-8">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-black mb-2">Instrucciones:</h2>
+                <ol class="list-decimal list-inside text-gray-700 space-y-2">
+                    <li>En la columna <strong class="gold-text">"Creencia Limitante"</strong>, escribe 3 frases negativas que te repites constantemente.</li>
+                    <li>En la columna <strong class="gold-text">"Frase de Poder"</strong>, transforma cada creencia en una afirmación potenciadora.</li>
+                    <li>Lee tus nuevas Frases de Poder en voz alta cada mañana. ¡Este es tu nuevo guion mental!</li>
+                </ol>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Columna de Creencias Limitantes -->
+                <div id="limiting-beliefs">
+                    <h3 class="text-xl font-bold text-center mb-4 text-red-700">CREENCIA LIMITANTE</h3>
+                    <!-- Creencias se generan aquí -->
+                </div>
+                <!-- Columna de Frases de Poder -->
+                <div id="empowering-phrases">
+                    <h3 class="text-xl font-bold text-center mb-4 text-green-700">FRASE DE PODER</h3>
+                    <!-- Frases se generan aquí -->
+                </div>
+            </div>
+        </div>
+        
+        <footer class="p-6 bg-[#d9d9d9] flex flex-col sm:flex-row items-center justify-between gap-4">
+             <div class="flex items-center h-10">
+                <span id="saveFeedback" class="text-green-800 font-bold opacity-0 transform -translate-y-2">¡Progreso Guardado!</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="clearButton" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-black transition transform hover:scale-105">
+                    Limpiar Campos
+                </button>
+                <button id="saveButton" class="gold-bg text-black font-bold py-2 px-6 rounded-lg hover:bg-gold-bg-dark transition transform hover:scale-105">
+                    Guardar Progreso
+                </button>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const limitingContainer = document.getElementById('limiting-beliefs');
+            const empoweringContainer = document.getElementById('empowering-phrases');
+            const saveButton = document.getElementById('saveButton');
+            const clearButton = document.getElementById('clearButton');
+            const saveFeedback = document.getElementById('saveFeedback');
+            
+            const beliefs = [
+                { limit: 'Ej: "No tengo tiempo."', power: 'Ej: "Yo decido cómo usar mi tiempo."' },
+                { limit: 'Ej: "Siempre abandono lo que empiezo."', power: 'Ej: "Hoy elijo avanzar aunque sea un solo paso."' },
+                { limit: 'Ej: "No soy lo suficientemente disciplinado."', power: 'Ej: "Cada día estoy desarrollando mi disciplina."' }
+            ];
+
+            // Generar campos de texto
+            beliefs.forEach((belief, index) => {
+                // Campo para creencia limitante
+                const limitBlock = document.createElement('div');
+                limitBlock.className = 'mb-6';
+                const limitTextarea = document.createElement('textarea');
+                limitTextarea.id = `limit-${index}`;
+                limitTextarea.className = 'w-full p-3 border-2 rounded-lg h-32 text-lg focus:ring-0 transition';
+                limitTextarea.placeholder = belief.limit;
+                limitBlock.appendChild(limitTextarea);
+                limitingContainer.appendChild(limitBlock);
+
+                // Campo para frase de poder
+                const powerBlock = document.createElement('div');
+                powerBlock.className = 'mb-6';
+                const powerTextarea = document.createElement('textarea');
+                powerTextarea.id = `power-${index}`;
+                powerTextarea.className = 'w-full p-3 border-2 rounded-lg h-32 text-lg focus:ring-0 transition';
+                powerTextarea.placeholder = belief.power;
+                powerBlock.appendChild(powerTextarea);
+                empoweringContainer.appendChild(powerBlock);
+            });
+
+            const textareas = document.querySelectorAll('textarea');
+
+            function saveData() {
+                const data = {};
+                textareas.forEach(textarea => {
+                    data[textarea.id] = textarea.value;
+                });
+                localStorage.setItem('dialogueWorkbook', JSON.stringify(data));
+                
+                // Feedback visual
+                saveFeedback.style.opacity = '1';
+                saveFeedback.style.transform = 'translateY(0)';
+                setTimeout(() => {
+                    saveFeedback.style.opacity = '0';
+                    saveFeedback.style.transform = 'translateY(-0.5rem)';
+                }, 2000);
+            }
+
+            function loadData() {
+                const savedData = JSON.parse(localStorage.getItem('dialogueWorkbook'));
+                if (savedData) {
+                    textareas.forEach(textarea => {
+                        textarea.value = savedData[textarea.id] || '';
+                    });
+                }
+            }
+
+            function clearData() {
+                if (confirm('¿Estás seguro de que quieres borrar todo lo que has escrito?')) {
+                    textareas.forEach(textarea => textarea.value = '');
+                    localStorage.removeItem('dialogueWorkbook');
+                }
+            }
+
+            // Event Listeners
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', saveData); // Autosave
+            });
+            saveButton.addEventListener('click', saveData);
+            clearButton.addEventListener('click', clearData);
+
+            loadData();
+        });
+    </script>
+</body>
+</html>
