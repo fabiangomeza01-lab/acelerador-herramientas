@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Bucle del Hábito (Interactivo)</title>
+    <script src="https://cdn.jsdelivr.net/npm/leader-line-new@1.1.9/leader-line.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #d9d9d9;
+            --text-color: #000000;
+            --accent-color: #cfaf5a;
+            --card-bg-color: #ffffff;
+            --node-bg-color: #f8f8f8;
+            --animation-duration: 0.5s;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Permite que el contenido no siempre esté centrado verticalmente */
+            min-height: 100vh;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+            background-size: 25px 25px;
+            color: var(--text-color);
+            padding: 5vh 20px; /* Añade espacio vertical para que no se corte */
+            box-sizing: border-box;
+            overflow-y: auto; /* Permite el scroll vertical si es necesario */
+        }
+
+        .container {
+            width: 90vw;
+            max-width: 800px;
+            background-color: var(--card-bg-color);
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .habit-loop-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+            margin: 0 auto 40px auto;
+        }
+
+        .node {
+            background-color: var(--node-bg-color);
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            width: 160px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            position: absolute;
+            z-index: 3;
+            opacity: 0;
+            transform: scale(0.9);
+            /* La transición ahora es más específica */
+            transition: transform var(--animation-duration) ease, opacity var(--animation-duration) ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .node:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .node.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .node .icon svg {
+             width: 32px;
+             height: 32px;
+             margin-bottom: 10px;
+        }
+
+        .node .title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        
+        .node.signal { top: 0; left: 50%; transform: translateX(-50%) scale(0.9); }
+        .node.routine { bottom: 0; left: 0; transform: scale(0.9); }
+        .node.reward { bottom: 0; right: 0; transform: scale(0.9); }
+
+        .node.signal .icon svg,
+        .node.reward .icon svg {
+            fill: var(--accent-color);
+        }
+        .node.routine .icon svg {
+            fill: var(--text-color);
+        }
+
+        .descriptions {
+            min-height: 80px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .description-content { display: none; }
+        .description-content.active { display: block; }
+        .description-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+        .description-content p {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>El Bucle del Hábito</h1>
+        <p class="subtitle">Una visualización dinámica del ciclo que crea y refuerza nuestros comportamientos.</p>
+
+        <div class="habit-loop-wrapper" id="habit-loop">
+            <div class="node signal" id="signal" data-target="desc-signal">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29V4A2,2 0 0,1 12,2A2,2 0 0,1 14,4V4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21" /></svg>
+                </div>
+                <div class="title">Señal</div>
+            </div>
+            <div class="node routine" id="routine" data-target="desc-routine">
+                <div class="icon">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M10,22C9.75,22 9.5,21.9 9.3,21.7L4.3,16.7C3.9,16.3 3.9,15.7 4.3,15.3L9.3,10.3C9.7,9.9 10.3,9.9 10.7,10.3L15.7,15.3C16.1,15.7 16.1,16.3 15.7,16.7L10.7,21.7C10.5,21.9 10.25,22 10,22M19.7,8.7L14.7,3.7C14.3,3.3 13.7,3.3 13.3,3.7L8.3,8.7C7.9,9.1 7.9,9.7 8.3,10.1L13.3,15.1C13.7,15.5 14.3,15.5 14.7,15.1L19.7,10.1C20.1,9.7 20.1,9.1 19.7,8.7Z" /></svg>
+                </div>
+                <div class="title">Rutina</div>
+            </div>
+            <div class="node reward" id="reward" data-target="desc-reward">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.2,12A6.2,6.2 0 0,1 14,18.2A6.2,6.2 0 0,1 7.8,12A6.2,6.2 0 0,1 14,5.8A6.2,6.2 0 0,1 20.2,12M18,1H6A2,2 0 0,0 4,3V15.74A8.2,8.2 0 0,0 14,20A8.2,8.2 0 0,0 24,11.74V3A2,2 0 0,0 22,1H18M11,14L8,11L9.4,9.6L11,11.2L14.6,7.6L16,9L11,14Z" /></svg>
+                </div>
+                <div class="title">Recompensa</div>
+            </div>
+        </div>
+
+        <div class="descriptions" id="descriptions">
+            <div id="desc-default" class="description-content active">
+                <h3>Pasa el cursor sobre cada etapa</h3>
+                <p>Descubre el rol que juega cada componente en la formación de un hábito.</p>
+            </div>
+             <div id="desc-signal" class="description-content">
+                <h3>1. La Señal</h3>
+                <p>Es el detonante que le indica a tu cerebro que entre en modo automático y qué hábito usar.</p>
+            </div>
+             <div id="desc-routine" class="description-content">
+                <h3>2. La Rutina</h3>
+                <p>Es la acción o el comportamiento en sí. Puede ser física, mental o emocional.</p>
+            </div>
+             <div id="desc-reward" class="description-content">
+                <h3>3. La Recompensa</h3>
+                <p>Es el premio que obtiene tu cerebro, lo que le ayuda a decidir si vale la pena recordar este bucle para el futuro.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const signal = document.getElementById('signal');
+            const routine = document.getElementById('routine');
+            const reward = document.getElementById('reward');
+            
+            const nodes = [signal, routine, reward];
+            const animationDelay = 400;
+            let allArrows = [];
+
+            // Función para dibujar las flechas. Puede ser llamada con o sin animación.
+            function drawLines(animate = false) {
+                allArrows.forEach(arrow => arrow.remove());
+                allArrows = [];
+
+                const lineOptions = {
+                    color: 'var(--text-color)',
+                    size: 2,
+                    endPlug: 'arrow1',
+                    endPlugSize: 1.5,
+                };
+                
+                const arrow1 = new LeaderLine(signal, routine, { ...lineOptions, path: 'arc', startSocket: 'bottom', endSocket: 'top' });
+                const arrow2 = new LeaderLine(routine, reward, { ...lineOptions, path: 'straight', startSocket: 'right', endSocket: 'left' });
+                const arrow3 = new LeaderLine(reward, signal, { ...lineOptions, path: 'arc', startSocket: 'top', endSocket: 'bottom' });
+                
+                allArrows = [arrow1, arrow2, arrow3];
+
+                if (animate) {
+                    allArrows.forEach(arrow => arrow.hide('none'));
+                    setTimeout(() => arrow1.show('draw', { duration: animationDelay, timing: 'ease-out' }), 0);
+                    setTimeout(() => arrow2.show('draw', { duration: animationDelay, timing: 'ease-out' }), animationDelay);
+                    setTimeout(() => arrow3.show('draw', { duration: animationDelay, timing: 'ease-out' }), animationDelay * 2);
+                }
+            }
+
+            function initializeAnimation() {
+                // Hacemos visibles los nodos
+                nodes.forEach(node => node.classList.add('visible'));
+
+                // Esperamos a que la animación de transición de los nodos termine
+                const lastNode = nodes[nodes.length - 1];
+                lastNode.addEventListener('transitionend', () => {
+                    // Una vez terminada la animación, dibujamos las líneas
+                    drawLines(true);
+                }, { once: true }); // El listener se ejecuta solo una vez
+            }
+
+            // Un pequeño retraso para asegurar que todo esté listo antes de empezar
+            setTimeout(initializeAnimation, 200);
+
+            // Lógica para el hover
+            const descriptions = document.getElementById('descriptions');
+            const loopWrapper = document.getElementById('habit-loop');
+            const allDescContent = descriptions.querySelectorAll('.description-content');
+            const defaultDesc = document.getElementById('desc-default');
+
+            nodes.forEach(node => {
+                node.addEventListener('mouseover', () => {
+                    const targetId = node.getAttribute('data-target');
+                    allDescContent.forEach(content => content.classList.remove('active'));
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            loopWrapper.addEventListener('mouseleave', () => {
+                allDescContent.forEach(content => content.classList.remove('active'));
+                defaultDesc.classList.add('active');
+            });
+
+            // Redibujar las líneas si la ventana cambia de tamaño (sin animación)
+            new ResizeObserver(() => {
+                // Solo redibujar si ya existen flechas
+                if (allArrows.length > 0) {
+                    drawLines(false);
+                }
+            }).observe(document.body);
+        });
+    </script>
+</body>
+</html>
+
