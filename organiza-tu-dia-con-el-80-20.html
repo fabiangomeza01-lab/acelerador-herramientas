@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbook: Organiza tu Día con el 80/20</title>
+    <style>
+        :root {
+            --bg-color: #d9d9d9;
+            --text-color: #000000;
+            --accent-color: #cfaf5a;
+            --card-bg-color: #ffffff;
+            --input-bg-color: #f8f8f8;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+            --secondary-btn-bg: #6c757d;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+            background-size: 25px 25px;
+            color: var(--text-color);
+            padding: 5vh 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .container {
+            width: 90vw;
+            max-width: 800px;
+            background-color: var(--card-bg-color);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+        
+        .header-section {
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            color: var(--accent-color);
+            margin: 0 auto 15px auto;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .workbook-section {
+            margin-bottom: 35px;
+            text-align: left;
+            animation: fadeIn 0.5s ease-out both;
+        }
+
+        .workbook-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .workbook-section h2 .icon {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-color);
+        }
+
+        .input-group {
+             display: flex;
+             flex-direction: column;
+        }
+
+        .input-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(207, 175, 90, 0.2);
+        }
+
+        #task-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        #new-task-input {
+            flex-grow: 1;
+        }
+
+        #task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-height: 100px;
+            background-color: var(--input-bg-color);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: background-color 0.3s;
+        }
+        
+        .task-item.starred {
+            background-color: #fffbeb;
+        }
+
+        .task-item span {
+            flex-grow: 1;
+            padding: 0 10px;
+        }
+        
+        .task-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            opacity: 0.6;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .task-actions button:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .star-btn { color: #ccc; }
+        .star-btn.active { color: var(--accent-color); }
+        .delete-btn { color: #dc3545; }
+        
+        .priority-row {
+            display: grid;
+            grid-template-columns: 1fr 150px;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--card-bg-color);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-btn-bg);
+            color: var(--card-bg-color);
+        }
+        
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eaf6ec;
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        input:read-only {
+            background-color: #e9ecef;
+            color: #495057;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .priority-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-section">
+             <div class="header-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12C8,14.21 9.79,16 12,16C14.21,16 16,14.21 16,12M12,14C10.9,14 10,13.1 10,12V4H14V12C14,13.1 13.1,14 12,14M20,12V22H4V12H2V22C2,23.11 2.9,24 4,24H20C21.11,24 22,23.11 22,22V12H20Z"/></svg>
+            </div>
+            <h1>Organiza tu Día con el 80/20</h1>
+            <p class="intro">Aprende a identificar qué tareas son realmente importantes. Si te enfocas en ellas primero, tu progreso se acelerará exponencialmente.</p>
+        </div>
+
+        <form id="workbook-form">
+            <!-- Sección 1: Lista de Tareas -->
+            <div class="workbook-section" style="animation-delay: 0.1s;">
+                <h2>
+                    <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M3,4H21V6H3V4M3,14H21V16H3V14M3,9H21V11H3V9M3,19H21V21H3V19Z"/></svg></div>
+                    1. Haz una lista de todas tus tareas pendientes
+                </h2>
+                <div id="task-input-container" class="input-group">
+                    <input type="text" id="new-task-input" placeholder="Escribe una tarea y presiona Enter...">
+                </div>
+                <ul id="task-list"></ul>
+            </div>
+
+            <!-- Sección 2: Prioridades Clave -->
+            <div class="workbook-section" style="animation-delay: 0.2s;">
+                <h2>
+                     <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+                    2. Elige tus 3 Prioridades Clave para Mañana
+                </h2>
+                <div class="priority-row">
+                    <div class="input-group">
+                        <label for="prio1">Prioridad #1</label>
+                        <input type="text" id="prio1" class="workbook-input" placeholder="La tarea más importante...">
+                    </div>
+                    <div class="input-group">
+                        <label for="time1">Bloque de Tiempo</label>
+                        <input type="text" id="time1" class="workbook-input" placeholder="Ej: 9:00 - 11:00">
+                    </div>
+                </div>
+                 <div class="priority-row">
+                    <div class="input-group">
+                        <label for="prio2">Prioridad #2</label>
+                        <input type="text" id="prio2" class="workbook-input" placeholder="La segunda tarea más importante...">
+                    </div>
+                    <div class="input-group">
+                        <label for="time2">Bloque de Tiempo</label>
+                        <input type="text" id="time2" class="workbook-input" placeholder="Ej: 11:00 - 12:00">
+                    </div>
+                </div>
+                 <div class="priority-row">
+                    <div class="input-group">
+                        <label for="prio3">Prioridad #3</label>
+                        <input type="text" id="prio3" class="workbook-input" placeholder="La tercera tarea más importante...">
+                    </div>
+                    <div class="input-group">
+                        <label for="time3">Bloque de Tiempo</label>
+                        <input type="text" id="time3" class="workbook-input" placeholder="Ej: 14:00 - 15:30">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group" style="animation-delay: 0.3s; animation: fadeIn 0.5s ease-out both;">
+                <button type="button" class="btn btn-primary" id="save-btn">Guardar Plan</button>
+                <button type="button" class="btn btn-secondary" id="clear-btn">Limpiar Formulario</button>
+            </div>
+            
+            <div class="success-message" id="success-msg">
+                ¡Plan guardado! Tu hoja de ruta para un día de máximo impacto está lista.
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskInput = document.getElementById('new-task-input');
+            const taskList = document.getElementById('task-list');
+            const saveBtn = document.getElementById('save-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const successMsg = document.getElementById('success-msg');
+            const priorityInputs = document.querySelectorAll('.workbook-input');
+
+            // --- Lógica de Tareas ---
+            taskInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    e.preventDefault();
+                    addTask(this.value.trim());
+                    this.value = '';
+                }
+            });
+
+            function addTask(taskText) {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                li.innerHTML = `
+                    <span class="task-text">${taskText}</span>
+                    <div class="task-actions">
+                        <button type="button" class="star-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg>
+                        </button>
+                        <button type="button" class="delete-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/></svg>
+                        </button>
+                    </div>
+                `;
+                taskList.appendChild(li);
+
+                // Event Listeners for new buttons
+                li.querySelector('.star-btn').addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    li.classList.toggle('starred');
+                });
+                li.querySelector('.delete-btn').addEventListener('click', function() {
+                    li.remove();
+                });
+            }
+
+            // --- Lógica de Botones Principales ---
+            saveBtn.addEventListener('click', () => {
+                let allPrioritiesFilled = true;
+                // Check only priority inputs, not the task list input
+                document.querySelectorAll('.priority-row input').forEach(input => {
+                    if (input.value.trim() === '') {
+                        allPrioritiesFilled = false;
+                    }
+                });
+
+                if (allPrioritiesFilled) {
+                    priorityInputs.forEach(input => input.readOnly = true);
+                    taskList.style.pointerEvents = 'none'; // Disable actions on task list
+                    successMsg.style.display = 'block';
+                } else {
+                    alert('Por favor, define tus 3 prioridades y sus bloques de tiempo para guardar el plan.');
+                }
+            });
+            
+            clearBtn.addEventListener('click', () => {
+                // Clear task list
+                taskList.innerHTML = '';
+                // Clear priority inputs and make them editable
+                priorityInputs.forEach(input => {
+                    input.value = '';
+                    input.readOnly = false;
+                });
+                taskList.style.pointerEvents = 'auto'; // Re-enable actions
+                successMsg.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
