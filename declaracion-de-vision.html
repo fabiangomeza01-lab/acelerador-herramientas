@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbook: Declaración de Visión 30 Días</title>
+    <style>
+        :root {
+            --bg-color: #d9d9d9;
+            --text-color: #000000;
+            --accent-color: #cfaf5a;
+            --card-bg-color: #ffffff;
+            --header-bg-color: #1a1a1a;
+            --header-text-color: #f0f0f0;
+            --input-bg-color: #f8f8f8;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+            --secondary-btn-bg: #6c757d;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+            background-size: 25px 25px;
+            color: var(--text-color);
+            padding: 5vh 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .container {
+            width: 90vw;
+            max-width: 800px;
+            background-color: transparent;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .header-section {
+            background-color: var(--header-bg-color);
+            color: var(--header-text-color);
+            padding: 30px 40px;
+        }
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            color: var(--accent-color);
+            margin: 0 auto 15px auto;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            color: var(--header-text-color);
+            opacity: 0.8;
+            margin-bottom: 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .form-content {
+            background-color: var(--card-bg-color);
+            padding: 40px;
+        }
+
+        .workbook-section {
+            margin-bottom: 35px;
+            text-align: left;
+            animation: fadeIn 0.5s ease-out both;
+        }
+        
+        .workbook-section h3 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .workbook-section h3 .icon {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-color);
+        }
+
+        .input-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg-color);
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(207, 175, 90, 0.2);
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--header-bg-color);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-btn-bg);
+            color: var(--card-bg-color);
+        }
+        
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eaf6ec;
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        input:read-only, textarea:read-only {
+            background-color: #e9ecef;
+            color: #495057;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-section">
+             <div class="header-icon">
+                <svg xmlns="http://www.w.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M4,4H20V6H4V4M6,18V8H4V18H6M10,18V8H8V18H10M14,18V8H12V18H14M18,18V8H16V18H18M20,20H4V22H20V20Z"/></svg>
+            </div>
+            <h1>Declaración de Visión</h1>
+            <p class="intro">Lo que declaras con tu boca, lo crees en tu corazón y lo vives en tus acciones. Escribir tus objetivos aumenta drásticamente la probabilidad de lograrlos.</p>
+        </div>
+
+        <form id="workbook-form" class="form-content">
+            <!-- Sección 1: Límites -->
+            <div class="workbook-section" style="animation-delay: 0.1s;">
+                <h3><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2C17.5,2 22,6.5 22,12C22,17.5 17.5,22 12,22C6.5,22 2,17.5 2,12C2,6.5 6.5,2 12,2M17,13H7V11H17V13Z"/></svg></div>1. Jamás volveré a permitir...</h3>
+                <div class="input-list">
+                    <div class="input-group">
+                        <input type="text" class="workbook-input" placeholder="Ej: Excusas para no empezar...">
+                    </div>
+                     <div class="input-group">
+                        <input type="text" class="workbook-input" placeholder="Ej: Postergar lo que sé que debo hacer...">
+                    </div>
+                     <div class="input-group">
+                        <input type="text" class="workbook-input" placeholder="Ej: Abandonar mis metas al primer obstáculo...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 2: Principios -->
+            <div class="workbook-section" style="animation-delay: 0.2s;">
+                <h3><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12,1L9,9L1,12L9,15L12,23L15,15L23,12L15,9L12,1Z"/></svg></div>2. Mis nuevas verdades son...</h3>
+                <div class="input-list">
+                    <div class="input-group">
+                        <input type="text" class="workbook-input" placeholder="Ej: La disciplina es mi mayor aliada...">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="workbook-input" placeholder="Ej: Actúo con fe y propósito cada día...">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="workbook-input" placeholder="Ej: La acción constante construye mi futuro...">
+                    </div>
+                </div>
+            </div>
+
+             <!-- Sección 3: Declaración -->
+            <div class="workbook-section" style="animation-delay: 0.3s;">
+                <h3><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" /></svg></div>3. Mi Declaración de Visión (30 Días)</h3>
+                <div class="input-group">
+                    <textarea class="workbook-input" placeholder="Redacta en primera persona... Ej: 'Soy disciplinado, vivo con propósito, y cada día avanzo hacia mi mejor versión... No camino solo, estoy construyendo una vida de impacto.'"></textarea>
+                </div>
+            </div>
+
+            <div class="button-group" style="animation-delay: 0.4s; animation: fadeIn 0.5s ease-out both;">
+                <button type="button" class="btn btn-primary" id="save-btn">Guardar Declaración</button>
+                <button type="button" class="btn btn-secondary" id="clear-btn">Limpiar Formulario</button>
+            </div>
+            
+            <div class="success-message" id="success-msg">
+                ¡Declaración guardada! Léela cada día. Tu compromiso ha sido sellado.
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const saveBtn = document.getElementById('save-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const successMsg = document.getElementById('success-msg');
+            const inputs = document.querySelectorAll('.workbook-input');
+
+            saveBtn.addEventListener('click', () => {
+                let allFilled = true;
+                inputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        allFilled = false;
+                    }
+                });
+
+                if (allFilled) {
+                    inputs.forEach(input => {
+                        input.readOnly = true;
+                    });
+                    successMsg.style.display = 'block';
+                } else {
+                    alert('Por favor, completa todos los campos para guardar tu declaración.');
+                }
+            });
+            
+            clearBtn.addEventListener('click', () => {
+                 inputs.forEach(input => {
+                    input.value = '';
+                    input.readOnly = false;
+                });
+                successMsg.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
